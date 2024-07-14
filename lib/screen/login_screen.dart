@@ -1,8 +1,9 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:lamphun_application/config/app.dart';
+import 'package:lamphun_application/services/auth_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,23 +15,18 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
-
+  
+  @override
+Future<void> checkLogin() async {
+  bool loggedIn = await AuthService().checkLogin();
+  if (loggedIn) {
+    Navigator.pushReplacementNamed(context, '/home');
+  }
+}
   Future<void> login() async {
-    final resonse = await http.post(
-        Uri.parse(
-          '${API_URL}/api/auth/login',
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'email': _email.text,
-          'password': _password.text,
-        }));
-    print(resonse.body);
-
-    if (resonse.statusCode == 200) {
-      Navigator.of(context).pushReplacementNamed('/home');
+    bool loggedIn = await AuthService().login(_email.text, _password.text);
+    if (loggedIn) {
+      Navigator.pushReplacementNamed(context, '/home');
     }
   }
 
