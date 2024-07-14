@@ -23,7 +23,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   Widget build(BuildContext context) {
     if (_post.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: Text('Page Detail'),),
+        appBar: AppBar(title: Text('Post Detail'),),
         body: const Center(
           child: CircularProgressIndicator(),
         ),
@@ -31,10 +31,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Page Detail'),
+        title: Text('Post Detail'),
       ),
       body: Container(
-        child: Text(_post['content']),
+        child: Column(
+          children: [
+            Text(_post['title']),
+            Text(_post['content']),
+          ],
+        ),
       ),
     );
   }
